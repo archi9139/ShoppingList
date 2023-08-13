@@ -2,28 +2,17 @@ package com.example.shoppinglist.presentation
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView.Adapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.ListAdapter
 import com.example.shoppinglist.R
 import com.example.shoppinglist.domain.ShopItem
 
-class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
+class ShopListAdapter :
+    ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
 
     private var count = 0
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
-    var shopList = listOf<ShopItem>()
-        set(value) {
-            val callback = ShopListDiffCallback(shopList, value)
-            val diffResult = DiffUtil.calculateDiff(callback)
-            diffResult.dispatchUpdatesTo(this)
-            field = value
-        }
-        get() = field.toList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
         val layout = when (viewType) {
@@ -38,7 +27,7 @@ class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
         Log.d("ShopListAdapter", "onBindViewHolder count ${++count}")
-        val shopItem = shopList[position]
+        val shopItem = getItem(position)
         with(holder) {
             titleTextView.text = shopItem.name
             countTextView.text = shopItem.count.toString()
@@ -53,17 +42,10 @@ class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        val shopItem = shopList[position]
+        val shopItem = getItem(position)
         if (shopItem.enabled)
             return VIEW_TYPE_ENABLED
         return VIEW_TYPE_DISABLED
-    }
-
-    override fun getItemCount(): Int = shopList.size
-
-    inner class ShopItemViewHolder(view: View) : ViewHolder(view) {
-        val titleTextView: TextView = view.findViewById(R.id.titleTextView)
-        val countTextView: TextView = view.findViewById(R.id.countTextView)
     }
 
     companion object {
