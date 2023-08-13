@@ -8,7 +8,7 @@ import java.util.Random
 
 object ShopListRepositoryImpl : ShopListRepository {
 
-    private var shopList = sortedSetOf(Comparator<ShopItem> {
+    private var shopList = sortedSetOf<ShopItem>({
             o1, o2 -> o1.id.compareTo(o2.id)
     })
     private var autoIncrementId = 1

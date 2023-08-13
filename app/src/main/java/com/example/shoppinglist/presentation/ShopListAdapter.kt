@@ -1,11 +1,9 @@
 package com.example.shoppinglist.presentation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.shoppinglist.R
@@ -13,16 +11,16 @@ import com.example.shoppinglist.domain.ShopItem
 
 class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
-    private var count = 0
+    var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+    var onShopItemClickListener: ((ShopItem) -> Unit)? = null
     var shopList = listOf<ShopItem>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+        get() = field.toList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
-
-        Log.d("ShopListAdapter", "onCreateViewHolder count: ${++count}")
         val layout = when (viewType) {
             VIEW_TYPE_ENABLED -> R.layout.item_shop_enabled
             VIEW_TYPE_DISABLED -> R.layout.item_shop_disabled
@@ -35,8 +33,17 @@ class ShopListAdapter : Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
         val shopItem = shopList[position]
-        holder.titleTextView.text = shopItem.name
-        holder.countTextView.text = shopItem.count.toString()
+        with(holder) {
+            titleTextView.text = shopItem.name
+            countTextView.text = shopItem.count.toString()
+            itemView.setOnLongClickListener {
+                onShopItemLongClickListener?.invoke(shopItem)
+                true
+            }
+            itemView.setOnClickListener {
+                onShopItemClickListener?.invoke(shopItem)
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
