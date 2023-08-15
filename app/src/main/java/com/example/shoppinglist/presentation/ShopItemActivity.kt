@@ -31,103 +31,103 @@ class ShopItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
-        parseIntent()
-        initViews()
-        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
-        observeViewModel()
-        setEditTextChangeListener()
-        when (screenMode) {
-            MODE_EDIT -> launchEditMode()
-            MODE_ADD -> launchAddMode()
-        }
+//        parseIntent()
+//        initViews()
+//        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
+//        observeViewModel()
+//        setEditTextChangeListener()
+//        when (screenMode) {
+//            MODE_EDIT -> launchEditMode()
+//            MODE_ADD -> launchAddMode()
+//        }
     }
 
-    private fun setEditTextChangeListener() {
-        etName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//    private fun setEditTextChangeListener() {
+//        etName.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                viewModel.resetErrorInputName()
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {}
+//        })
+//
+//        etCount.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                viewModel.resetErrorInputCount()
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {}
+//        })
+//    }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.resetErrorInputName()
-            }
+//    private fun observeViewModel() {
+//        viewModel.apply {
+//            shouldCloseScreen.observe(this@ShopItemActivity) {
+//                finish()
+//            }
+//            errorInputName.observe(this@ShopItemActivity) {
+//                val errorMessage = if (it) {
+//                    getString(R.string.empty_input_name)
+//                } else
+//                    null
+//                tilName.error = errorMessage
+//            }
+//            errorInputCount.observe(this@ShopItemActivity) {
+//                val errorMessage = if (it) {
+//                    getString(R.string.empty_input_count)
+//                } else
+//                    null
+//                tilCount.error = errorMessage
+//            }
+//        }
+//    }
 
-            override fun afterTextChanged(s: Editable?) {}
-        })
+//    private fun launchAddMode() {
+//        saveBtn.setOnClickListener {
+//            viewModel.addShopItem(etName.text?.toString(), etCount.text?.toString())
+//        }
+//    }
 
-        etCount.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//    private fun launchEditMode() {
+//        viewModel.getShopItem(shopItemId)
+//        viewModel.shopItem.observe(this) {
+//            etName.setText(it.name)
+//            etCount.setText(it.count.toString())
+//        }
+//        saveBtn.setOnClickListener {
+//            viewModel.editShopItem(etName.text?.toString(), etCount.text?.toString())
+//        }
+//    }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.resetErrorInputCount()
-            }
+//    private fun initViews() {
+//        tilName = findViewById(R.id.til_name)
+//        tilCount = findViewById(R.id.til_count)
+//        etName = findViewById(R.id.et_name)
+//        etCount = findViewById(R.id.et_count)
+//        saveBtn = findViewById(R.id.saveBtn)
+//    }
 
-            override fun afterTextChanged(s: Editable?) {}
-        })
-    }
-
-    private fun observeViewModel() {
-        viewModel.apply {
-            shouldCloseScreen.observe(this@ShopItemActivity) {
-                finish()
-            }
-            errorInputName.observe(this@ShopItemActivity) {
-                val errorMessage = if (it) {
-                    getString(R.string.empty_input_name)
-                } else
-                    null
-                tilName.error = errorMessage
-            }
-            errorInputCount.observe(this@ShopItemActivity) {
-                val errorMessage = if (it) {
-                    getString(R.string.empty_input_count)
-                } else
-                    null
-                tilCount.error = errorMessage
-            }
-        }
-    }
-
-    private fun launchAddMode() {
-        saveBtn.setOnClickListener {
-            viewModel.addShopItem(etName.text?.toString(), etCount.text?.toString())
-        }
-    }
-
-    private fun launchEditMode() {
-        viewModel.getShopItem(shopItemId)
-        viewModel.shopItem.observe(this) {
-            etName.setText(it.name)
-            etCount.setText(it.count.toString())
-        }
-        saveBtn.setOnClickListener {
-            viewModel.editShopItem(etName.text?.toString(), etCount.text?.toString())
-        }
-    }
-
-    private fun initViews() {
-        tilName = findViewById(R.id.til_name)
-        tilCount = findViewById(R.id.til_count)
-        etName = findViewById(R.id.et_name)
-        etCount = findViewById(R.id.et_count)
-        saveBtn = findViewById(R.id.saveBtn)
-    }
-
-    private fun parseIntent() {
-        if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
-            throw RuntimeException("Param screen mode is absent")
-        }
-
-        val mode = intent.getStringExtra(EXTRA_SCREEN_MODE)
-        if (mode != MODE_EDIT && mode != MODE_ADD) {
-            throw RuntimeException("Unknown screen mode $mode")
-        }
-        screenMode = mode
-        if (screenMode == MODE_EDIT) {
-            if (!intent.hasExtra(EXTRA_SHOP_ITEM_ID)) {
-                throw RuntimeException("Param shop id is absent")
-            }
-            shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, ShopItem.UNDEFINED_ID)
-        }
-    }
+//    private fun parseIntent() {
+//        if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
+//            throw RuntimeException("Param screen mode is absent")
+//        }
+//
+//        val mode = intent.getStringExtra(EXTRA_SCREEN_MODE)
+//        if (mode != MODE_EDIT && mode != MODE_ADD) {
+//            throw RuntimeException("Unknown screen mode $mode")
+//        }
+//        screenMode = mode
+//        if (screenMode == MODE_EDIT) {
+//            if (!intent.hasExtra(EXTRA_SHOP_ITEM_ID)) {
+//                throw RuntimeException("Param shop id is absent")
+//            }
+//            shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, ShopItem.UNDEFINED_ID)
+//        }
+//    }
 
     companion object {
         private const val EXTRA_SCREEN_MODE = "extra_mode"
