@@ -12,6 +12,7 @@ import com.example.shoppinglist.R
 import com.example.shoppinglist.presentation.ShopListAdapter.Companion.MAX_POOL_SIZE
 import com.example.shoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_DISABLED
 import com.example.shoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_ENABLED
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +28,12 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.shopListLD.observe(this) {
             shopListAdapter.submitList(it)
+        }
+
+        val addBtn = findViewById<FloatingActionButton>(R.id.itemAddBtn)
+        addBtn.setOnClickListener {
+            val intent = ShopItemActivity.newIntentAddItem(this)
+            startActivity(intent)
         }
     }
 
@@ -53,7 +60,9 @@ class MainActivity : AppCompatActivity() {
                 viewModel.changeShopItemState(it)
             }
             onShopItemClickListener = {
-                Log.d(TAG, it.toString())
+                val intent = ShopItemActivity
+                    .newIntentEditItem(this@MainActivity, it.id)
+                startActivity(intent)
             }
         }
     }

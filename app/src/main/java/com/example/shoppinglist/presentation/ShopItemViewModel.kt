@@ -95,7 +95,7 @@ class ShopItemViewModel : ViewModel() {
         _errorInputCount.value = false
     }
 
-    fun finishWork() {
+    private fun finishWork() {
         _shouldCloseScreen.value = Unit
     }
 }
