@@ -26,7 +26,6 @@ class ShopListAdapter :
     }
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
-        Log.d("ShopListAdapter", "onBindViewHolder count ${++count}")
         val shopItem = getItem(position)
         with(holder) {
             titleTextView.text = shopItem.name
